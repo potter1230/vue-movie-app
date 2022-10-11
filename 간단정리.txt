@@ -1,0 +1,24 @@
+부모 자식 관계의 컴포넌트 사이에 데이터를 주고 받는건 props,
+지금 하고 있는 프로젝트의 구조에서 예를 들자면
+Home.vue -> MovieList.vue -> MovieItem.vue 이 관계인데
+Home.vue -> MovieItem.vue 데이터 전송을 할때는
+Home.vue ->(props) MovieList.vue ->(props) MovieItem.vue 이렇게 전달
+근데 중간 매개체 없이 전달할때 provide/inject를 통해 바로 전달
+
+근데 문제는 형제 관계의 컴포넌트 끼리 데이터를 주고 받으려면
+부모에게 전달했다 다시 그걸 형제에게 전달해야 하는데
+그럼 굳이 필요하지도 않은 데이터를 부모에서 처리해야하는 비효율적인 방식을 써야함
+
+이를 위해 vuex(store)를 사용
+vuex는 중앙 집중 데이터 관리 시스템을 말하는데
+데이터를 총괄해서 다룰 장소(store)를 만들어 필요한 컴포넌트에 보내주는 역할
+vuex는 라이브러리 이렇게 데이터를 총괄해서 다룰 장소를 만들어 필요한 컴포넌트에 보내주는 역할의 시스템을 store라고 함
+
+npm i vuex@next 설치
+설치 완료 후 src 폴더에서 store 폴더 생성 index.js 생성
+index.js에서 vuex 패키지를 가져오고 각 컴포넌트에서 사용할 데이터 모듈 설정
+이를 main.js에서 전역적으로 연결
+
+그리고 각 모듈에 해당하는 파일을 store에 생성
+ex) movie 페이지에서 사용할 데이터 모듈은 movie.js
+그 모듈을 index.js에서 연결
