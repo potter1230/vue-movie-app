@@ -1,5 +1,8 @@
 // 가져오기 (= import)
 const axios = require("axios");
+// 환경변수 
+// const OMDB_API_KEY = process.env.OMDB_API_KEY;
+const { OMDB_API_KEY } = process.env;
 
 exports.handler = async function(event, context) {
     // 여기서 console.log로 찍어보면 터미널에서 확인가능함, 브라우저 확인 x
@@ -10,7 +13,7 @@ exports.handler = async function(event, context) {
     // 그래서 body의 데이터는 모두 문자열이다. 이 문자열 형태의 객체 데이터를 사용하려면 문자열을 다시 객체로 바꿔야함 그때 JSON.parse 사용
     const payload = JSON.parse(event.body); 
     const {title, type, year, page, id} = payload; // 객체 구조분해
-    const OMDB_API_KEY = "7035c60c";
+    // const OMDB_API_KEY = "7035c60c"; // 환경변수로 구성
     const url = id 
         ? `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${id}` 
         : `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=${title}&type=${type}&y=${year}&page=${page}`;

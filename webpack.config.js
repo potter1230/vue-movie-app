@@ -9,6 +9,9 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 const { VueLoaderPlugin } = require("vue-loader");
 
+// 환경변수 구성(api 키 감추기 위해)
+const Dotenv = require("dotenv-webpack");
+
 // export
 module.exports = {
     resolve: {
@@ -86,7 +89,8 @@ module.exports = {
                 { from: "static" } // 생성한 폴더 
             ]
         }),
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
+        new Dotenv()
     ],
 
     devServer: {
