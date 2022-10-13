@@ -118,9 +118,16 @@ export default {
                         });
                     }
                 }
-            } catch(message){
+            } 
+            // catch(message), message는 이전 방식
+            // 이전 방식은 내부적 스크립트 간의 상호방식으로 데이터를 주고 받았는데
+            // netlify 서버리스 함수를 사용하면 error 메세지가 객체 형태로 전달되니까
+            // 에러를 출력하는 코드도 수정해야함
+            catch(/*message*//*error*/{ message }){ 
                 commit("updateState", {
                     movies: [],
+                    // message,
+                    // message: error.message
                     message
                 })
             } finally {
@@ -158,7 +165,8 @@ export default {
 }
 
 // 이름 앞에 _언더바는 이 파일에서만 사용하겠다는 의미
-function _fetchMovies(payload) { 
+async function _fetchMovies(payload) { 
+    /*
     const {title, type, year, page, id} = payload; // 객체 구조분해
     const OMDB_API_KEY = "7035c60c";
     const url = id 
@@ -176,4 +184,7 @@ function _fetchMovies(payload) {
                 reject(err.massage);
             })
     });
+    */
+    // 위 코드는 functions/movie.js로 이동
+    return await axios.post("/.netlify/functions/movie", payload);
 }
