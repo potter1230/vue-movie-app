@@ -1,0 +1,50 @@
+import { asyncFn } from "./example";
+
+describe("비동기 테스트", () => {
+    /*
+    test("done", ()=>{
+        // 비동기 방식은 기존의 방법으론 정상적으로 테스트 되지 않음
+        asyncFn().then(result => {
+            expect(result).toBe("ㅁㄴㅇ");
+        });
+    });
+    */
+    // 그래서 done라는 매개변수를 추가하고 done 메소드를 사용하면 됨
+    // 이 done라는 매개변수는 비동기 테스트가 언제 종료되는지 명시해 주는데 함수처럼 실행
+    test("done", done => {
+        asyncFn().then(result => {
+            expect(result).toBe("Done!");
+            done();
+        });
+    });
+    // 두번째 방식은 return을 사용하는데 return을 통해 비동기 형식의 코드의 값이 반환되는 걸 확인한 후에 테스트를 하니까 정상적으로 테스트가 됨
+    test("then", () => { 
+        return asyncFn().then(result => {
+            expect(result).toBe("Done!");
+        });
+    });
+    //
+    /*
+    test("resolves", () => {
+        return expect(asyncFn()).resolves.toBe("Done!");
+    });
+    */
+    test("resolves", () => expect(asyncFn()).resolves.toBe("Done!"));
+
+    // 이걸 젤 많이씀
+    // 왜냐하면 async/await 키워드를 사용하니까 이 코드가 비동기 형식임을 직관적으로 알 수 있기 때문에
+    test("async/await", async () => {
+        const res = await asyncFn();
+        expect(res).toBe("Done!");
+    });
+
+    // test 함수는 첫번째 매개변수로 테스트의 이름, 두번째는 콜백함수, 세번째는 test 함수가 테스트할 코드의 값을 기다리는 시간인데 기본값이 5000ms 즉 5초이다.
+    // 현재 테스트 진행중인 asyncFn() 함수의 경우 setTimeout으로 2초후에 실행되도록 했는데 만약 2초가 아닌 6초로 하면 test함수의 기본 5초의 시간이 초과되어 코드는 정상이라도 에러를 뱉어낸다 이때 test함수의 세번째 매개변수의 기본값은 5000을 변경해줄수 있다.
+    /* 
+    ex)
+    test("async/await", async () => {
+        const res = await asyncFn();
+        expect(res).toBe("Done!");
+    }, 6000);
+    */
+});

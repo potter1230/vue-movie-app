@@ -1,0 +1,35 @@
+import { double } from "./example";
+
+describe("그룹 1", () => {
+    // 모든 테스트가 시작하기 전에 딱 1번만 실행
+    beforeAll(() => {
+        console.log("beforeAll!!");
+    });
+    // 모든 테스트가 진행된 후 딱 1번만 실행
+    afterAll(() => {
+        console.log("afterAll!!");
+    });
+
+    beforeEach(() => {
+        console.log("beforeEach!!");
+    });
+    afterEach(() => {
+       console.log("afterEach"); 
+    });
+
+    test("첫 테스트", () => {
+        console.log("첫 테스트");
+        // 실제값과 기대값
+        expect(123).toBe(123);
+    });
+    
+    test("인수가 숫자 데이터입니다.", ()=>{
+        console.log("인수가 숫자 데이터입니다.");
+        expect(double(3)).toBe(6);
+    });
+    
+    test("인수가 없습니다.", ()=>{
+        console.log("인수가 없습니다.");
+        expect(double()).toBe(123);
+    });
+});

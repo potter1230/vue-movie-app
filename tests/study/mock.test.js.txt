@@ -1,0 +1,44 @@
+// 전체 가져오기
+// import * as example from "./example";
+// 객체구조분해로 가져오기
+import { fetchMovieTitle } from "./example";
+
+import axios from "axios";
+
+
+
+describe("비동기 테스트", () => {
+    /*
+    test("async/await", async() => {
+        // 모의(mock)함수
+        // test에 7000 후에 실행되도록 했으나 이 시간을 일일이 기다리지 않고
+        // 이 함수가 정상적인 것인지 테스트만 진행할 경우 
+
+        // const result = await example.asyncFn();
+        // expect(result).toBe("Done!");
+        // 위의 코드를 아래의 방법으로 모의함수로 테스트 할 수 있음
+        jest.spyOn(example, "asyncFn").mockResolvedValue("Done!");
+
+        const result = await example.asyncFn();
+        expect(result).toBe("Done!");
+    }, 7000);
+    */
+
+    test("fetchMovieTitle 모의테스트", async() => {
+        // 아래와 같은 방식에서 fetchMovieTitle의 데이터는 omdbapi에서 내어주는 데이터라 내가 만든 코드에서 omdbapi의 로직을 내부적으로 테스트를 할 필요수도 없도 할 필요도 없다. 그래서 omdbapi 데이터를 모의함수로 바꾼 다음에 테스트를 진행해보자
+        // await axios.get("https://omdbapi.com?apikey=7035c60c&i=tt4520988") 이 부분의 모의함수가 아래와 같다.
+        axios.get = jest.fn(() => {
+            return new Promise(resolve => {
+                resolve({
+                    data: {
+                        Title: "Frozen II"
+                    }
+                })
+            });
+        });
+        // 이렇게 omdbapi의 데이터를 가져오는 부분을 모의함수로 하는 이유는 내가 원하는 건 fetchMovieTitle() 함수의 로직으로 데이터가 소문자로 변경되고 앞글자만 대문자가 되는지를 테스트하기 위함인데 이때 네트워크의 문제로 인해 omdbapi의 데이터를 가져오지 못할 경우엔 테스트가 안된다 이런 다양한 경우를 대비해 모의함수를 제작해 테스트를 진행한다.
+        
+        const title = await fetchMovieTitle();
+        expect(title).toBe("Frozen ii");
+    });
+});

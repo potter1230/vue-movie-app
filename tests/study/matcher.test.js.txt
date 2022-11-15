@@ -1,0 +1,24 @@
+const userA = {
+    name: "Young",
+    age: 12
+}
+const userB = {
+    name: "Neo",
+    age: 230
+}
+
+test("데이터가 일치해야 합니다.", () => {
+    // toBe는 원시데이터 비교, 원시데이터는 str,num,boolean,undefined,null
+    // toEqual은 참조형, 참조형데이터는 배열, 객체
+    expect(userA.age).toBe(12);
+    expect(userA).toEqual({
+        name: "Young",
+        age: 12
+    });
+});
+
+test("데이터가 일치하지 않아야 합니다.", () => {
+    expect(userB.name).not.toBe("asd");
+    expect(userB).not.toBe(userA);
+    expect(userB).toEqual(userA);
+});

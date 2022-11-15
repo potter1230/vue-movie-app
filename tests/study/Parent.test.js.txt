@@ -1,0 +1,15 @@
+// import { mount } from "@vue/test-utils";
+import { mount, shallowMount } from "@vue/test-utils";
+import Parent from "./Parent";
+
+
+test("mount 테스트", () => {
+    const wrapper = mount(Parent);
+    expect(wrapper.html()).toBe("");
+});
+
+
+test("shallowMount 테스트", () => {
+    const wrapper = shallowMount(Parent);
+    expect(wrapper.html()).toBe("");
+});

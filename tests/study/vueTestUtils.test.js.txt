@@ -1,0 +1,25 @@
+// vue 컴포넌트 테스트 방법
+import { mount } from "@vue/test-utils";
+import Example from "./Example.vue";
+
+test("메세지를 변경합니다", async () => {
+    // vue 컴포넌트를 연결해주기 위해 mount라는 test-utils라는 패키지에서 가져온 기능을 함수처럼 실행, 이때 두가지 인수를 명시 첫번째는 컴포넌트명, 둘째 옵션
+    // mount(컴포넌트명, {옵션}) 옵션 없으면 생략가능
+
+    // mount() 함수가 실행되면 test-utils에서 제공하는 wrapper라는 객체를 반환
+    const wrapper = mount(Example);
+    
+    // 이렇게 반환되는 wrapper객체의 데이터에 접근할땐 보통 this를 사용하는데 여기선 vm으로 접근
+    expect(wrapper.vm.msg).toBe("hello vue test utils!");
+
+    // wrapper.vm.msg = "hello young!"; 이렇게 값을 바로 할당을 하면 실제 Example의 컴포넌트의 msg의 값은 변하지 않는 비반응성을 보인다. vue.js를 반응성을 보장해줘야 하기 때문에 이런 방법은 옳지 않다. 그래서 값을 바로 할당해주지 말고 setData라는 메소드를 통해 값에 반응성을 부여한다.
+    // setData를 통해 할당한 값이 컴포넌트에 적용되 갱신이 되는 동안 기다려줘야기 때문에 비동기로 처리된다. 그래서 await 사용
+    // await를 사용했으니 test의 콜백함수 앞에 async 키워드 사용
+    await wrapper.setData({
+        msg: "hello young!"
+    });
+
+    expect(wrapper.vm.msg).toBe("hello young!");
+    // 실제 Example 컴포넌트의 msg가 바뀌었는지 msg 데이터를 뽑아오는 방법
+    expect(wrapper.find("div").text()).toBe("hello young?");
+});
